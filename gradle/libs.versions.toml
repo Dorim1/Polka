@@ -123,13 +123,13 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "room" }
 
 # Project plugins
-test-android-application = { id = "test.android.application" }
-test-android-application-compose = { id = "test.android.application.compose" }
-test-android-feature-api = { id = "test.android.feature.api" }
-test-android-feature-impl = { id = "test.android.feature.impl" }
-test-android-library = { id = "test.android.library" }
-test-android-library-compose = { id = "test.android.library.compose" }
-test-android-room = { id = "test.android.room" }
-test-hilt = { id = "test.hilt" }
-test-jvm-library = { id = "test.jvm.library" }
+polka-android-application = { id = "polka.android.application" }
+polka-android-application-compose = { id = "polka.android.application.compose" }
+polka-android-feature-api = { id = "polka.android.feature.api" }
+polka-android-feature-impl = { id = "polka.android.feature.impl" }
+polka-android-library = { id = "polka.android.library" }
+polka-android-library-compose = { id = "polka.android.library.compose" }
+polka-android-room = { id = "polka.android.room" }
+polka-hilt = { id = "polka.hilt" }
+polka-jvm-library = { id = "polka.jvm.library" }
 
