@@ -4,7 +4,6 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import ru.anlyashenko.core.model.CategoryInventory
 
-
 data class CategoryWithItemsDBO(
     @Embedded
     val categoryDBO: CategoryDBO,
