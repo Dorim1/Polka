@@ -1,4 +1,4 @@
-package ru.anlyashenko.polkaapp.ui.theme
+package ru.anlyashenko.core.designsystem.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

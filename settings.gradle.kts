@@ -38,3 +38,6 @@ include(":core:database")
 include(":core:model")
 include(":core:designsystem")
 include(":core:common")
+
+include(":feature:inventory:api")
+include(":feature:inventory:impl")
