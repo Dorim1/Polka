@@ -32,3 +32,12 @@ rootProject.name = "PolkaApp"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
+include(":core:navigation")
+include(":core:data")
+include(":core:database")
+include(":core:model")
+include(":core:designsystem")
+include(":core:common")
+
+include(":feature:inventory:api")
+include(":feature:inventory:impl")
