@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.polka.android.feature.impl)
+    alias(libs.plugins.polka.android.library.compose)
 }
 
 android {
