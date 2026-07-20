@@ -7,9 +7,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import ru.anlyashenko.core.common.di.IoDispatcher
 import ru.anlyashenko.core.database.AppDatabase
+import ru.anlyashenko.core.database.DatabaseCallback
 import ru.anlyashenko.core.database.dao.ItemDAO
 import javax.inject.Provider
 import javax.inject.Singleton
@@ -21,13 +24,14 @@ internal object DatabaseModule {
     @Singleton
     fun provideAppDatabase(
         @ApplicationContext context: Context,
-        itemDaoProvider: Provider<ItemDAO>
+        databaseProvider: Provider<AppDatabase>,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
     ): AppDatabase = Room.databaseBuilder(
         context,
         AppDatabase::class.java,
         "app-database"
     )
-//        .addCallback(DatabaseCallback(itemDaoProvider, CoroutineScope(Dispatchers.IO))) todo: add callback
+        .addCallback(DatabaseCallback(databaseProvider, ioDispatcher))
         .fallbackToDestructiveMigration(true)
         .build()
 }

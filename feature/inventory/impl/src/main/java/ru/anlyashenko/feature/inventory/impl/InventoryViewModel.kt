@@ -55,6 +55,10 @@ class InventoryViewModel @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    fun onItemAdd(item: Item) {
+
+    }
+
     fun onItemDelete(item: Item) {
         TODO("Not yet implemented")
     }
