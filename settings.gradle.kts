@@ -41,3 +41,4 @@ include(":core:common")
 
 include(":feature:inventory:api")
 include(":feature:inventory:impl")
+include(":core:ui")
