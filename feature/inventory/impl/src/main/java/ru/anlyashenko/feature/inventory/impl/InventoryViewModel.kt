@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import ru.anlyashenko.core.data.repository.InventoryRepository
 import ru.anlyashenko.core.model.Category
 import ru.anlyashenko.core.model.Item
@@ -55,8 +56,25 @@ class InventoryViewModel @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    fun onItemAdd(item: Item) {
+    fun onItemAdd(name: String, categoryId: Long, quantityStr: String, unit: String) {
+        if (name.isBlank() || categoryId == 0L) return
 
+        viewModelScope.launch {
+            val quantity = quantityStr.toDoubleOrNull()
+
+            val newItem = Item(
+                categoryId = categoryId,
+                name = name.trim(),
+                icon = null,
+                quantity = quantity,
+                unit = unit.ifBlank { null },
+                expirationDate = null,
+                storageConditions = null,
+                needsAttention = false
+            )
+
+            inventoryRepository.saveItem(newItem)
+        }
     }
 
     fun onItemDelete(item: Item) {
