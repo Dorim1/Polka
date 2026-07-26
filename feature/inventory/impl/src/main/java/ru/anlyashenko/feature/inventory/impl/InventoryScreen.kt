@@ -37,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
@@ -59,6 +60,7 @@ import ru.anlyashenko.core.ui.InventoryListPreviewParameterProvider
 @Composable
 fun InventoryScreen(
     onBackClick: () -> Unit,
+    onAuraClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: InventoryViewModel = hiltViewModel()
 ) {
@@ -70,6 +72,7 @@ fun InventoryScreen(
         uiState = uiState,
         onBackClick = onBackClick,
         onMoreClick = { showAddSheet = true },
+        onAuraClick =  onAuraClick,
         onCategoryFilterClick = viewModel::onCategoryFilterSelected,
         onItemClick = viewModel::onItemClicked,
         modifier = modifier,
@@ -103,6 +106,7 @@ internal fun InventoryScreen(
     uiState: InventoryUiState,
     onBackClick: () -> Unit,
     onMoreClick: () -> Unit,
+    onAuraClick: () -> Unit,
     onCategoryFilterClick: (Category) -> Unit,
     onItemClick: (Item) -> Unit,
     modifier: Modifier = Modifier,
@@ -130,6 +134,13 @@ internal fun InventoryScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = onAuraClick) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_wand_stars),
+                            contentDescription = "Aura",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
                     IconButton(onClick = onMoreClick) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_more),
@@ -138,7 +149,7 @@ internal fun InventoryScreen(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors( // todo ?
                     containerColor = MaterialTheme.colorScheme.background
                 )
             )
@@ -328,6 +339,7 @@ private fun InventoryScreenPopulated(
             ),
             onBackClick = {},
             onMoreClick = {},
+            onAuraClick = {},
             onCategoryFilterClick = {},
             onItemClick = {}
         )
@@ -342,6 +354,7 @@ private fun InventoryScreenLoading() {
             uiState = InventoryUiState.Loading,
             onBackClick = {},
             onMoreClick = {},
+            onAuraClick = {},
             onCategoryFilterClick = {},
             onItemClick = {}
         )

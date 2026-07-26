@@ -9,6 +9,7 @@ android {
 
 dependencies {
     implementation(projects.feature.inventory.api)
+    implementation(projects.feature.aura.api)
 
     implementation(projects.core.data)
 

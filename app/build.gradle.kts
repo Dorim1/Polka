@@ -28,6 +28,9 @@ dependencies {
     implementation(projects.feature.inventory.api)
     implementation(projects.feature.inventory.impl)
 
+    implementation(projects.feature.aura.api)
+    implementation(projects.feature.aura.impl)
+
     implementation(projects.core.designsystem)
     implementation(projects.core.data)
     implementation(projects.core.model)
