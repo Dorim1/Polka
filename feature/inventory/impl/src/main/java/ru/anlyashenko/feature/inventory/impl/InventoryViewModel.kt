@@ -53,7 +53,7 @@ class InventoryViewModel @Inject constructor(
     }
 
     fun onItemClicked(item: Item) {
-        TODO("Not yet implemented")
+        // todo
     }
 
     fun onItemAdd(name: String, categoryId: Long, quantityStr: String, unit: String) {
@@ -78,7 +78,7 @@ class InventoryViewModel @Inject constructor(
     }
 
     fun onItemDelete(item: Item) {
-        TODO("Not yet implemented")
+        // todo
     }
 
 }
