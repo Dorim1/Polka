@@ -10,6 +10,9 @@ junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.7.1"
+androidxTracing = "1.3.0"
+spotless = "8.9.0"
+ktlint = "1.5.0"
 
 androidLifecycle = "2.11.0"
 lifecycleRuntimeKtx = "2.11.0"
@@ -93,6 +96,8 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 # Testing
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+androidx-tracing-ktx = { group = "androidx.tracing", name = "tracing-ktx", version.ref = "androidxTracing" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -107,16 +112,21 @@ compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
+spotless-gradlePlugin = { group = "com.diffplug.spotless", name = "spotless-plugin-gradle", version.ref = "spotless" }
+
 
 [plugins]
 # Android / Kotlin
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-lint = { id = "com.android.lint", version.ref = "agp" }
+android-test = { id = "com.android.test", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+
 
 # DI / DB
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
@@ -130,6 +140,8 @@ polka-android-feature-impl = { id = "polka.android.feature.impl" }
 polka-android-library = { id = "polka.android.library" }
 polka-android-library-compose = { id = "polka.android.library.compose" }
 polka-android-room = { id = "polka.android.room" }
+polka-android-test = { id = "polka.android.test" }
+polka-android-lint = { id = "polka.android.lint" }
 polka-hilt = { id = "polka.hilt" }
 polka-jvm-library = { id = "polka.jvm.library" }
 
