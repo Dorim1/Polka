@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.polka.android.feature.impl)
+    alias(libs.plugins.polka.android.library.compose)
 }
 
 android {
@@ -8,6 +9,7 @@ android {
 
 dependencies {
     implementation(projects.feature.inventory.api)
+    implementation(projects.feature.aura.api)
 
     implementation(projects.core.data)
 
