@@ -5,6 +5,7 @@ import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import ru.anlyashenko.polkaapp.libs
+import kotlin.text.get
 
 class AndroidFeatureImplConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -24,7 +25,11 @@ class AndroidFeatureImplConventionPlugin : Plugin<Project> {
                 "implementation"(libs.findLibrary("androidx.lifecycle.viewmodel.compose").get())
                 "implementation"(libs.findLibrary("androidx.navigation3.runtime").get())
                 "implementation"(libs.findLibrary("hilt.navigation.compose").get())
+                "implementation"(libs.findLibrary("androidx.tracing.ktx").get())
 
+                "androidTestImplementation"(
+                    libs.findLibrary("androidx.lifecycle.runtimeTesting").get(),
+                )
             }
         }
     }

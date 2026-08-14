@@ -10,17 +10,28 @@ junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.7.1"
-androidxTracing = "1.3.0"
+androidxTestCore = "1.6.1"
+androidxTestRules = "1.6.1"
+androidxTestRunner = "1.6.2"
+androidxTracing = "2.0.0"
+androidxComposeRuntimeTracing = "1.12.0"
 spotless = "8.9.0"
 ktlint = "1.5.0"
+truth = "1.4.5"
+turbine = "1.2.1"
+roborazzi = "1.71.0"
+robolectric = "4.16.1"
+androidxMacroBenchmark = "1.5.0-rc01"
+androidxProfileinstaller = "1.4.1"
+androidxUiAutomator = "2.4.0"
 
-androidLifecycle = "2.11.0"
-lifecycleRuntimeKtx = "2.11.0"
+androidxLifecycle = "2.11.0"
 
 composeBom = "2026.06.01"
 activityCompose = "1.13.0"
 foundation = "1.11.4"
 material = "1.14.0"
+
 
 # Network
 retrofit = "3.0.0"
@@ -34,7 +45,8 @@ serialization = "1.11.0"
 room = "2.8.4"
 
 # Navigation
-androidxNavigation3 = "1.1.4"
+androidxNavigation3 = "1.1.6"
+androidxNavigation = "2.9.8"
 
 # DI
 hilt = "2.60.1"
@@ -42,17 +54,20 @@ hilt = "2.60.1"
 # Other
 jakartaInjectApi = "2.0.1"
 
+[bundles]
+androidx-compose-ui-test = ["androidx-compose-ui-test-junit4", "androidx-compose-ui-test-manifest"]
+
 [libraries]
 # Core
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 
 # Lifecycle
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidLifecycle" }
-androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidLifecycle" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidx-compose-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose" }
-androidx-lifecycle-viewModel-navigation3 = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "androidLifecycle" }
+androidx-lifecycle-viewModel-navigation3 = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "androidxLifecycle" }
 
 # Compose
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -66,7 +81,6 @@ androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
-androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 
 # Navigation
 androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "androidxNavigation3" }
@@ -96,11 +110,28 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 # Testing
-kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+androidx-test-core = { group = "androidx.test", name = "core-ktx", version.ref = "androidxTestCore" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTestRules" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
 androidx-tracing-ktx = { group = "androidx.tracing", name = "tracing-ktx", version.ref = "androidxTracing" }
+androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidxNavigation" }
+androidx-compose-runtime-tracing = { group = "androidx.compose.runtime", name = "runtime-tracing", version.ref = "androidxComposeRuntimeTracing" }
+androidx-lifecycle-viewModel-testing = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-testing", version.ref = "androidxLifecycle" }
+androidx-lifecycle-runtimeTesting = { group = "androidx.lifecycle", name = "lifecycle-runtime-testing", version.ref = "androidxLifecycle" }
+androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidxMacroBenchmark" }
+androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidxProfileinstaller" }
+androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "androidxUiAutomator" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
+roborazzi-accessibility-check = { group = "io.github.takahirom.roborazzi", name = "roborazzi-accessibility-check", version.ref = "roborazzi" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 
 # Other
 jakarta-inject-api = { module = "jakarta.inject:jakarta.inject-api", version.ref = "jakartaInjectApi" }
@@ -125,6 +156,7 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 
