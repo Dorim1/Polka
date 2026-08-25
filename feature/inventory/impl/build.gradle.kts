@@ -13,7 +13,13 @@ dependencies {
 
     implementation(projects.core.data)
 
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    testImplementation(libs.truth)
+    testImplementation(libs.hilt.android.testing)
+    testImplementation(libs.robolectric)
+    testImplementation(projects.core.testing)
+//  todo testDemoImplementation(projects.core.screenshotTesting)
+
+    androidTestImplementation(libs.bundles.androidx.compose.ui.test)
+    androidTestImplementation(projects.core.testing)
+
 }

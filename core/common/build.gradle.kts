@@ -6,4 +6,7 @@ plugins {
 dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.jakarta.inject.api)
+
+    testImplementation(libs.kotlinx.coroutines.core)
+    testImplementation(libs.turbine)
 }

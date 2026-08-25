@@ -1,5 +1,6 @@
 package ru.anlyashenko.feature.inventory.impl
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InventoryViewModel @Inject constructor(
+//  todo private val savedStateHandle: SavedStateHandle,
     private val inventoryRepository: InventoryRepository
 ) : ViewModel() {
     private val selectedCategory = MutableStateFlow<Category?>(null)

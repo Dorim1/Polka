@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.polka.android.library)
     alias(libs.plugins.polka.android.library.compose)
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -14,4 +15,12 @@ dependencies {
     api(libs.androidx.compose.runtime)
 
     implementation(projects.core.model)
+
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+    testImplementation(libs.androidx.compose.ui.test.manifest)
+
+    testImplementation(libs.hilt.android.testing)
+    testImplementation(libs.robolectric)
+//  todo testImplementation(projects.core.screenshotTesting)
+
 }
