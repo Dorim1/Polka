@@ -30,10 +30,13 @@ class InventoryViewModelTest {
     fun setup() {
         viewModel = InventoryViewModel(
             inventoryRepository = inventoryRepository,
-            // todo: SavedStateHandle()
+            // savedStateHandle = SavedStateHandle() // todo: if needed later
         )
     }
 
+    /**
+     * Verifies that the initial UI state of the ViewModel is [InventoryUiState.Loading].
+     */
     @Test
     fun stateIsInitiallyLoading() = runTest {
         viewModel.uiState.test {
@@ -42,9 +45,14 @@ class InventoryViewModelTest {
         }
     }
 
+    /**
+     * Verifies that when the repository emits inventory data, the UI state updates to
+     * [InventoryUiState.Success] containing the correct data and no pre-selected category.
+     */
     @Test
-    fun stateIsSuccess_whenInventoryLoads() = runTest {
+    fun stateIsSuccessWhenInventoryLoads() = runTest {
         viewModel.uiState.test {
+            // Skip initial Loading state
             assertThat(awaitItem()).isEqualTo(InventoryUiState.Loading)
 
             val sampleCategory = Category(
@@ -72,20 +80,29 @@ class InventoryViewModelTest {
                 )
             )
 
+            // Emit mocked data from the fake repository
             inventoryRepository.sendInventory(testCategories)
 
+            // Verify Success state
             val successState = awaitItem() as InventoryUiState.Success
 
             assertThat(successState.inventory).isEqualTo(testCategories)
             assertThat(successState.filterCategories).containsExactly(sampleCategory)
             assertThat(successState.selectedCategory).isNull()
+
             cancelAndIgnoreRemainingEvents()
         }
     }
 
+    /**
+     * Verifies the behavior of the category filter:
+     * 1. Selecting a category filters the inventory list.
+     * 2. Selecting the same category again clears the filter and restores the full list.
+     */
     @Test
-    fun categoryFilter_togglesAndFiltersInventory() = runTest {
+    fun categoryFilterTogglesAndFiltersInventory() = runTest {
         viewModel.uiState.test {
+            // Skip initial Loading state
             assertThat(awaitItem()).isEqualTo(InventoryUiState.Loading)
 
             val category1 = Category(id = 1L, name = "Category 1")
@@ -94,7 +111,7 @@ class InventoryViewModelTest {
             val item1 = Item(
                 id = 10L,
                 categoryId = category1.id,
-                name = "Помидор",
+                name = "Tomato",
                 icon = null,
                 quantity = null,
                 unit = null,
@@ -104,7 +121,7 @@ class InventoryViewModelTest {
             val item2 = Item(
                 id = 20L,
                 categoryId = category2.id,
-                name = "Яблоко",
+                name = "Apple",
                 icon = null,
                 quantity = null,
                 unit = null,
@@ -117,21 +134,26 @@ class InventoryViewModelTest {
                 CategoryInventory(category = category2, items = listOf(item2)),
             )
 
+            // Setup initial data
             inventoryRepository.sendInventory(testInventory)
             val initialState = awaitItem() as InventoryUiState.Success
 
             assertThat(initialState.selectedCategory).isNull()
             assertThat(initialState.inventory).hasSize(2)
 
+            // Action: Select 'Category 1'
             viewModel.onCategoryFilterSelected(category1)
 
+            // Verify: List is filtered
             val filteredState = awaitItem() as InventoryUiState.Success
             assertThat(filteredState.selectedCategory).isEqualTo(category1)
             assertThat(filteredState.inventory).hasSize(1)
             assertThat(filteredState.inventory[0].category.id).isEqualTo(1L)
 
+            // Action: Click 'Category 1' again to toggle off
             viewModel.onCategoryFilterSelected(category1)
 
+            // Verify: Filter is cleared
             val toggledState = awaitItem() as InventoryUiState.Success
             assertThat(toggledState.selectedCategory).isNull()
             assertThat(toggledState.inventory).hasSize(2)
@@ -140,44 +162,63 @@ class InventoryViewModelTest {
         }
     }
 
+    /**
+     * Verifies that the [InventoryViewModel.onItemAdd] method rejects invalid inputs
+     * (empty name, zero categoryId) and properly formats and saves valid inputs.
+     */
     @Test
-    fun onItemAdd_ignoresInvalidInput_andSavesValidInput() = runTest {
+    fun onItemAddIgnoresInvalidInputAndSavesValidInput() = runTest {
+        // Attempt to save item with blank name
         viewModel.onItemAdd(
             name = "   ",
             categoryId = 1L,
             quantityStr = "2.5",
-            unit = "кг"
+            unit = "kg"
         )
-        // репозиторий ничего не сохранил
         assertThat(inventoryRepository.savedItems).isEmpty()
 
-        // 2. предмет с categoryId == 0L
+        // Attempt to save item with invalid category ID (0L)
         viewModel.onItemAdd(
-            name = "Морковь",
+            name = "Carrot",
             categoryId = 0L,
             quantityStr = "1",
-            unit = "кг"
+            unit = "kg"
         )
         assertThat(inventoryRepository.savedItems).isEmpty()
 
-        // 3. ПРАВИЛЬНЫЙ предмет
+        // Attempt to save valid item
         viewModel.onItemAdd(
-            name = " Морковь ", // проверить trim()
+            name = " Carrot ", // Testing trim() functionality
             categoryId = 1L,
             quantityStr = "2.5",
-            unit = "кг"
+            unit = "kg"
         )
 
-        // Ждем, пока отработает корутина во ViewModel (viewModelScope.launch)
-        // В тестах runTest это происходит мгновенно
-
-        // предмет сохранился
+        // Verify valid item was saved successfully
         assertThat(inventoryRepository.savedItems).hasSize(1)
 
         val savedItem = inventoryRepository.savedItems.first()
-        assertThat(savedItem.name).isEqualTo("Морковь") // Проверили trim()
+        assertThat(savedItem.name).isEqualTo("Морковь") // Should be trimmed
         assertThat(savedItem.categoryId).isEqualTo(1L)
         assertThat(savedItem.quantity).isEqualTo(2.5)
         assertThat(savedItem.unit).isEqualTo("кг")
+    }
+
+    /**
+     * Verifies that if a user inputs an invalid quantity string (e.g., text instead of numbers)
+     * or a blank unit, they are safely converted to null before saving to the database.
+     */
+    @Test
+    fun onItemAddConvertsInvalidQuantityToNull() = runTest {
+        viewModel.onItemAdd(
+            name = "Test Item",
+            categoryId = 1L,
+            quantityStr = "not a number", // Invalid double
+            unit = "    " // Blank unit
+        )
+
+        val savedItem = inventoryRepository.savedItems.first()
+        assertThat(savedItem.quantity).isNull()
+        assertThat(savedItem.unit).isNull()
     }
 }
