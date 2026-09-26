@@ -198,10 +198,10 @@ class InventoryViewModelTest {
         assertThat(inventoryRepository.savedItems).hasSize(1)
 
         val savedItem = inventoryRepository.savedItems.first()
-        assertThat(savedItem.name).isEqualTo("Морковь") // Should be trimmed
+        assertThat(savedItem.name).isEqualTo("Carrot") // Should be trimmed
         assertThat(savedItem.categoryId).isEqualTo(1L)
         assertThat(savedItem.quantity).isEqualTo(2.5)
-        assertThat(savedItem.unit).isEqualTo("кг")
+        assertThat(savedItem.unit).isEqualTo("kg")
     }
 
     /**
