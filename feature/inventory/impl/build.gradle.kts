@@ -20,6 +20,7 @@ dependencies {
 //  todo testDemoImplementation(projects.core.screenshotTesting)
 
     androidTestImplementation(libs.bundles.androidx.compose.ui.test)
+    androidTestImplementation(libs.androidx.espresso.core) // Вынести в convention plugin
     androidTestImplementation(projects.core.testing)
 
 }

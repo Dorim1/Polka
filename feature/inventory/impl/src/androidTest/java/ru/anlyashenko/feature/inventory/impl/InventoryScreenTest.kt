@@ -84,7 +84,7 @@ class InventoryScreenTest {
             InventoryScreenUnderTest(uiState = successState)
         }
 
-        composeTestRule.onNodeWithTag("Polka").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Polka").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Back").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Aura").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("More").assertIsDisplayed()
@@ -92,7 +92,7 @@ class InventoryScreenTest {
         composeTestRule.onAllNodesWithText("Category1")[0].assertIsDisplayed()
 
         composeTestRule.onNodeWithText("Item1").assertIsDisplayed()
-        composeTestRule.onNodeWithText("5").assertIsDisplayed()
+        composeTestRule.onNodeWithText("5 kg").assertIsDisplayed()
 
         composeTestRule.onNodeWithText("Item2").assertIsDisplayed()
         composeTestRule.onNodeWithText("! 0.5 kg").assertIsDisplayed()
