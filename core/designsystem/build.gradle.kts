@@ -6,6 +6,7 @@ plugins {
 
 android {
     namespace = "ru.anlyashenko.core.designsystem"
+    testOptions.unitTests.isIncludeAndroidResources = true
 
 }
 
@@ -21,6 +22,6 @@ dependencies {
 
     testImplementation(libs.hilt.android.testing)
     testImplementation(libs.robolectric)
-//  todo testImplementation(projects.core.screenshotTesting)
+    testImplementation(projects.core.screenshotTesting)
 
 }
