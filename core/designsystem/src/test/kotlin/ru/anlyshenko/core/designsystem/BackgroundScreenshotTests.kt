@@ -19,6 +19,7 @@ import org.robolectric.annotation.LooperMode
 import ru.anlyashenko.core.designsystem.component.PolkaBackground
 import ru.anlyashenko.core.designsystem.theme.PolkaAppTheme
 import ru.anlyashenko.core.screenshot_testing.captureMultiDevice
+import ru.anlyashenko.core.screenshot_testing.captureMultiTheme
 
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -31,9 +32,9 @@ class BackgroundScreenshotTests {
 
     @Test
     fun polkaBackground() {
-        composeTestRule.captureMultiDevice("Background") {
+        composeTestRule.captureMultiTheme("Background") { description ->
             PolkaBackground(Modifier.size(100.dp)) {
-                Text("background")
+                Text("$description background")
             }
         }
     }
