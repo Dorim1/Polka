@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
+import ru.anlyashenko.core.designsystem.component.PolkaBackground
 import ru.anlyashenko.core.navigation.Navigator
 import ru.anlyashenko.core.navigation.toEntries
 import ru.anlyashenko.feature.aura.impl.navigation.auraEntry
@@ -23,20 +24,20 @@ fun PolkaApp(
     val appState = rememberTestAppState(startKey)
     val navigator = remember { Navigator(appState.navigationState) }
 
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-    ) { innerPadding ->
-        val entryProvider = entryProvider {
-            inventoryEntry(navigator)
-            auraEntry(navigator)
-        }
+    PolkaBackground(modifier = modifier) {
+        Scaffold { innerPadding ->
+            val entryProvider = entryProvider {
+                inventoryEntry(navigator)
+                auraEntry(navigator)
+            }
 
-        NavDisplay(
-            entries = appState.navigationState.toEntries(entryProvider),
-            onBack = { navigator.goBack() },
-            modifier = Modifier
-                .consumeWindowInsets(innerPadding)
-                .padding(innerPadding),
-        )
+            NavDisplay(
+                entries = appState.navigationState.toEntries(entryProvider),
+                onBack = { navigator.goBack() },
+                modifier = Modifier
+                    .consumeWindowInsets(innerPadding)
+                    .padding(innerPadding),
+            )
+        }
     }
 }

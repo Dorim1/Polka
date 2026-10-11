@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ru.anlyashenko.core.designsystem.R
+import ru.anlyashenko.core.designsystem.component.PolkaBackground
 import ru.anlyashenko.core.designsystem.theme.PolkaAppTheme
 import ru.anlyashenko.core.model.Category
 import ru.anlyashenko.core.model.CategoryInventory
@@ -115,7 +116,7 @@ internal fun InventoryScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = Color.Transparent,
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
@@ -152,7 +153,7 @@ internal fun InventoryScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
+                    containerColor = Color.Transparent,
                     scrolledContainerColor = Color.Unspecified,
                     navigationIconContentColor = Color.Unspecified,
                     titleContentColor = Color.Unspecified,
@@ -330,10 +331,12 @@ private fun ProductItemCardPreview(
 ) {
     val sampleItem = inventory.first().items.first()
     PolkaAppTheme {
-        ProductItemCard(
-            item = sampleItem,
-            onClick = {}
-        )
+        PolkaBackground {
+            ProductItemCard(
+                item = sampleItem,
+                onClick = {}
+            )
+        }
     }
 }
 
@@ -344,17 +347,19 @@ private fun InventoryScreenPopulated(
     inventory: List<CategoryInventory>
 ) {
     PolkaAppTheme {
-        InventoryScreen(
-            uiState = InventoryUiState.Success(
-                inventory = inventory,
-                filterCategories = inventory.map { it.category },
-            ),
-            onBackClick = {},
-            onMoreClick = {},
-            onAuraClick = {},
-            onCategoryFilterClick = {},
-            onItemClick = {}
-        )
+        PolkaBackground {
+            InventoryScreen(
+                uiState = InventoryUiState.Success(
+                    inventory = inventory,
+                    filterCategories = inventory.map { it.category },
+                ),
+                onBackClick = {},
+                onMoreClick = {},
+                onAuraClick = {},
+                onCategoryFilterClick = {},
+                onItemClick = {}
+            )
+        }
     }
 }
 
@@ -362,13 +367,15 @@ private fun InventoryScreenPopulated(
 @Composable
 private fun InventoryScreenLoading() {
     PolkaAppTheme {
-        InventoryScreen(
-            uiState = InventoryUiState.Loading,
-            onBackClick = {},
-            onMoreClick = {},
-            onAuraClick = {},
-            onCategoryFilterClick = {},
-            onItemClick = {}
-        )
+        PolkaBackground {
+            InventoryScreen(
+                uiState = InventoryUiState.Loading,
+                onBackClick = {},
+                onMoreClick = {},
+                onAuraClick = {},
+                onCategoryFilterClick = {},
+                onItemClick = {}
+            )
+        }
     }
 }

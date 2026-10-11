@@ -74,7 +74,7 @@ fun <A : ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<A>, A>.c
     screenshotName: String,
     roborazziOptions: RoborazziOptions = DefaultRoborazziOptions,
     accessibilitySuppressions: Matcher<in AccessibilityViewCheckResult> = Matchers.not(Matchers.anything()),
-//    darkMode: Boolean = false,
+    darkMode: Boolean = false,
     body: @Composable () -> Unit,
 ) {
     val (width, height, dpi) = extractSpecs(deviceSpec)
@@ -86,13 +86,11 @@ fun <A : ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<A>, A>.c
         CompositionLocalProvider(
             LocalInspectionMode provides true,
         ) {
-            /*DeviceConfigurationOverride(
+            DeviceConfigurationOverride(
                 override = DeviceConfigurationOverride.Companion.DarkMode(darkMode),
             ) {
                 body()
-            }*/
-
-            body()
+            }
         }
     }
 

@@ -1,10 +1,13 @@
 plugins {
     alias(libs.plugins.polka.android.feature.impl)
     alias(libs.plugins.polka.android.library.compose)
+    alias(libs.plugins.roborazzi)
 }
 
 android {
     namespace = "ru.anlyashenko.feature.inventory.impl"
+    testOptions.unitTests.isIncludeAndroidResources = true
+
 }
 
 dependencies {
@@ -17,7 +20,7 @@ dependencies {
     testImplementation(libs.hilt.android.testing)
     testImplementation(libs.robolectric)
     testImplementation(projects.core.testing)
-//  todo testDemoImplementation(projects.core.screenshotTesting)
+    testImplementation(projects.core.screenshotTesting)
 
     androidTestImplementation(libs.bundles.androidx.compose.ui.test)
     androidTestImplementation(libs.androidx.espresso.core) // Вынести в convention plugin
