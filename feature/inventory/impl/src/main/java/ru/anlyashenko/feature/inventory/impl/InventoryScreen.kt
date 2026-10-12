@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -165,7 +166,9 @@ internal fun InventoryScreen(
         when (uiState) {
             is InventoryUiState.Loading -> {
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator(
@@ -176,49 +179,55 @@ internal fun InventoryScreen(
             }
 
             is InventoryUiState.Success -> {
-                Column(
+                // Используем стейт сетки по аналогии с NiA для плавной прокрутки
+                val gridState = rememberLazyGridState()
+
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 320.dp),
+                    state = gridState,
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues)
+                        .padding(paddingValues),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    CategoryFilterRow(
-                        categories = uiState.filterCategories,
-                        selectedCategory = uiState.selectedCategory,
-                        onCategoryClick = onCategoryFilterClick,
-                    )
+                    // 1. Секция фильтров категорий на всю ширину сетки (FullLine)
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        CategoryFilterRow(
+                            categories = uiState.filterCategories,
+                            selectedCategory = uiState.selectedCategory,
+                            onCategoryClick = onCategoryFilterClick,
+                        )
+                    }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
 
-                    LazyVerticalGrid(
-                        columns = GridCells.Adaptive(minSize = 320.dp),
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        uiState.inventory.forEach { categoryInventory ->
-                            item(
-                                span = { GridItemSpan(maxLineSpan) },
-                                key = "header_${categoryInventory.category.id}"
-                            ) {
-                                Text(
-                                    text = categoryInventory.category.name,
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontSize = 16.sp,
-                                    modifier = Modifier.padding(top = 8.dp)
-                                )
-                            }
+                    // 2. Элементы инвентаря по категориям
+                    uiState.inventory.forEach { categoryInventory ->
+                        item(
+                            span = { GridItemSpan(maxLineSpan) },
+                            key = "header_${categoryInventory.category.id}"
+                        ) {
+                            Text(
+                                text = categoryInventory.category.name,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 16.sp,
+                                modifier = Modifier.padding(top = 8.dp)
+                            )
+                        }
 
-                            items(
-                                items = categoryInventory.items,
-                                key = { it.id }
-                            ) { product ->
-                                ProductItemCard(
-                                    item = product,
-                                    onClick = { onItemClick(product) }
-                                )
-                            }
+                        items(
+                            items = categoryInventory.items,
+                            key = { it.id }
+                        ) { product ->
+                            ProductItemCard(
+                                item = product,
+                                onClick = { onItemClick(product) }
+                            )
                         }
                     }
                 }

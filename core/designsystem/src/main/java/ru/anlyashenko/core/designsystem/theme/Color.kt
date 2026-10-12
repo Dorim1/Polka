@@ -50,6 +50,6 @@ val OnSecondaryColorLight = Color(0xFFF2F2F3)
  * Surface colors Light theme
  */
 //val SurfaceColor = Color(0xFF24252A)
-val SurfaceColorLight = Color(0xFFF2F2F3)
+val SurfaceColorLight = Color(0xFFFCFCFC)
 val OnSurfaceColorLight = Color(0xFF171717)
 

@@ -56,7 +56,7 @@ fun PolkaAppTheme(
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     val backgroundTheme = BackgroundTheme(
-        color = colorScheme.surface,
+        color = colorScheme.background, // был surface
         tonalElevation = 2.dp
     )
 
