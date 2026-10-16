@@ -57,7 +57,7 @@ dependencies {
     kspTest(libs.hilt.compiler)
 
     testImplementation(libs.hilt.android.testing)
-//    testImplementation(projects.core.dataTest)
+    testImplementation(projects.core.dataTest)
     testImplementation(libs.kotlin.test)
 
     /*testDemoImplementation(libs.androidx.navigation.testing)
@@ -67,7 +67,7 @@ dependencies {
     testDemoImplementation(projects.core.testing)*/
 
     androidTestImplementation(projects.core.testing)
-//    androidTestImplementation(projects.core.dataTest)
+    androidTestImplementation(projects.core.dataTest)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.hilt.android.testing)

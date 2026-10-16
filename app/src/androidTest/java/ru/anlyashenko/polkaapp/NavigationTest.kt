@@ -11,6 +11,8 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.NoActivityResumedException
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -63,6 +65,18 @@ class NavigationTest {
     @Test(expected = NoActivityResumedException::class)
     fun backFromInventory_quitsApp() {
         Espresso.pressBack()
+    }
+
+    @Test
+    fun clickingCategoryFilter_showOnlyItsItems() {
+        val inventory = runBlocking { inventoryRepository.getInventory().first() }
+        val category = inventory.first().category
+        val otherItem = inventory.last().items.first()
+
+        composeTestRule.onNodeWithTag("category_filter_${category.id}")
+            .performClick()
+
+        composeTestRule.onNodeWithText(otherItem.name).assertDoesNotExist()
     }
 
 }

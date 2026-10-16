@@ -310,7 +310,8 @@ fun CategoryFilterRow(
                 shape = RoundedCornerShape(16.dp),
                 color = if (isSelected) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.surface.copy(
                     alpha = 0.2f
-                )
+                ),
+                modifier = Modifier.testTag("category_filter_${category.id}")
             ) {
                 Text(
                     text = category.name,
