@@ -32,6 +32,10 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.room.gradlePlugin)
+    compileOnly(libs.spotless.gradlePlugin)
+    // todo
+//    implementation(libs.truth)
+//    lintChecks(libs.androidx.lint.gradle)
 }
 
 gradlePlugin {
@@ -67,6 +71,14 @@ gradlePlugin {
         register("androidRoom") {
             id = libs.plugins.polka.android.room.get().pluginId
             implementationClass = "AndroidRoomConventionPlugin"
+        }
+        register("androidLint") {
+            id = libs.plugins.polka.android.lint.get().pluginId
+            implementationClass = "AndroidLintConventionPlugin"
+        }
+        register("androidTest") {
+            id = libs.plugins.polka.android.test.get().pluginId
+            implementationClass = "AndroidTestConventionPlugin"
         }
         register("jvmLibrary") {
             id = libs.plugins.polka.jvm.library.get().pluginId

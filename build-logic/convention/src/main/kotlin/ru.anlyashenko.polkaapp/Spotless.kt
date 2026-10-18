@@ -1,0 +1,37 @@
+package ru.anlyashenko.polkaapp
+
+import com.diffplug.gradle.spotless.SpotlessExtension
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.configure
+
+internal fun Project.configureSpotlessForAndroid() {
+    configureSpotlessCommon()
+    extensions.configure<SpotlessExtension> {
+        format("xml") {
+            target("src/**/*.xml")
+            endWithNewline()
+        }
+    }
+}
+
+internal fun Project.configureSpotlessForJvm() {
+    configureSpotlessCommon()
+}
+
+private fun Project.configureSpotlessCommon() {
+    apply(plugin = "com.diffplug.spotless")
+    extensions.configure<SpotlessExtension> {
+        kotlin {
+            target("src/**/*.kt")
+            ktlint(libs.findVersion("ktlint").get().requiredVersion)
+                .editorConfigOverride(mapOf("android" to "true"))
+
+            endWithNewline()
+        }
+        format("kts") {
+            target("*.kts")
+            endWithNewline()
+        }
+    }
+}

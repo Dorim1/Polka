@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -38,7 +39,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ru.anlyashenko.core.designsystem.R
+import ru.anlyashenko.core.designsystem.component.PolkaBackground
 import ru.anlyashenko.core.designsystem.theme.PolkaAppTheme
 import ru.anlyashenko.core.model.Category
 import ru.anlyashenko.core.model.CategoryInventory
@@ -113,7 +117,7 @@ internal fun InventoryScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = Color.Transparent,
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
@@ -149,63 +153,81 @@ internal fun InventoryScreen(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors( // todo ?
-                    containerColor = MaterialTheme.colorScheme.background
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Unspecified,
+                    navigationIconContentColor = Color.Unspecified,
+                    titleContentColor = Color.Unspecified,
+                    actionIconContentColor = Color.Unspecified
                 )
             )
         }
     ) { paddingValues ->
         when (uiState) {
             is InventoryUiState.Loading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.testTag("loading_indicator"),
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
             }
 
             is InventoryUiState.Success -> {
-                Column(
+                // Используем стейт сетки по аналогии с NiA для плавной прокрутки
+                val gridState = rememberLazyGridState()
+
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 320.dp),
+                    state = gridState,
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues)
+                        .padding(paddingValues),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    CategoryFilterRow(
-                        categories = uiState.filterCategories,
-                        selectedCategory = uiState.selectedCategory,
-                        onCategoryClick = onCategoryFilterClick,
-                    )
+                    // 1. Секция фильтров категорий на всю ширину сетки (FullLine)
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        CategoryFilterRow(
+                            categories = uiState.filterCategories,
+                            selectedCategory = uiState.selectedCategory,
+                            onCategoryClick = onCategoryFilterClick,
+                        )
+                    }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
 
-                    LazyVerticalGrid(
-                        columns = GridCells.Adaptive(minSize = 320.dp),
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        uiState.inventory.forEach { categoryInventory ->
-                            item(
-                                span = { GridItemSpan(maxLineSpan) },
-                                key = "header_${categoryInventory.category.id}"
-                            ) {
-                                Text(
-                                    text = categoryInventory.category.name,
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontSize = 16.sp,
-                                    modifier = Modifier.padding(top = 8.dp)
-                                )
-                            }
+                    // 2. Элементы инвентаря по категориям
+                    uiState.inventory.forEach { categoryInventory ->
+                        item(
+                            span = { GridItemSpan(maxLineSpan) },
+                            key = "header_${categoryInventory.category.id}"
+                        ) {
+                            Text(
+                                text = categoryInventory.category.name,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 16.sp,
+                                modifier = Modifier.padding(top = 8.dp)
+                            )
+                        }
 
-                            items(
-                                items = categoryInventory.items,
-                                key = { it.id }
-                            ) { product ->
-                                ProductItemCard(
-                                    item = product,
-                                    onClick = { onItemClick(product) }
-                                )
-                            }
+                        items(
+                            items = categoryInventory.items,
+                            key = { it.id }
+                        ) { product ->
+                            ProductItemCard(
+                                item = product,
+                                onClick = { onItemClick(product) }
+                            )
                         }
                     }
                 }
@@ -288,7 +310,8 @@ fun CategoryFilterRow(
                 shape = RoundedCornerShape(16.dp),
                 color = if (isSelected) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.surface.copy(
                     alpha = 0.2f
-                )
+                ),
+                modifier = Modifier.testTag("category_filter_${category.id}")
             ) {
                 Text(
                     text = category.name,
@@ -318,10 +341,12 @@ private fun ProductItemCardPreview(
 ) {
     val sampleItem = inventory.first().items.first()
     PolkaAppTheme {
-        ProductItemCard(
-            item = sampleItem,
-            onClick = {}
-        )
+        PolkaBackground {
+            ProductItemCard(
+                item = sampleItem,
+                onClick = {}
+            )
+        }
     }
 }
 
@@ -332,17 +357,19 @@ private fun InventoryScreenPopulated(
     inventory: List<CategoryInventory>
 ) {
     PolkaAppTheme {
-        InventoryScreen(
-            uiState = InventoryUiState.Success(
-                inventory = inventory,
-                filterCategories = inventory.map { it.category },
-            ),
-            onBackClick = {},
-            onMoreClick = {},
-            onAuraClick = {},
-            onCategoryFilterClick = {},
-            onItemClick = {}
-        )
+        PolkaBackground {
+            InventoryScreen(
+                uiState = InventoryUiState.Success(
+                    inventory = inventory,
+                    filterCategories = inventory.map { it.category },
+                ),
+                onBackClick = {},
+                onMoreClick = {},
+                onAuraClick = {},
+                onCategoryFilterClick = {},
+                onItemClick = {}
+            )
+        }
     }
 }
 
@@ -350,13 +377,15 @@ private fun InventoryScreenPopulated(
 @Composable
 private fun InventoryScreenLoading() {
     PolkaAppTheme {
-        InventoryScreen(
-            uiState = InventoryUiState.Loading,
-            onBackClick = {},
-            onMoreClick = {},
-            onAuraClick = {},
-            onCategoryFilterClick = {},
-            onItemClick = {}
-        )
+        PolkaBackground {
+            InventoryScreen(
+                uiState = InventoryUiState.Loading,
+                onBackClick = {},
+                onMoreClick = {},
+                onAuraClick = {},
+                onCategoryFilterClick = {},
+                onItemClick = {}
+            )
+        }
     }
 }
