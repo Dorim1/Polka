@@ -85,9 +85,10 @@ fun AuraGeneratorScreen(modifier: Modifier = Modifier) {
                 color3 = generateVibrantColor()
                 color4 = generateVibrantColor()
                 seed = Random.nextFloat() * 100f
-            }
+            },
+            modifier = Modifier.testTag("aura:generate")
         ) {
-            Text("Сгенерировать ULR-000")
+            Text("Сгенерировать ауру")
         }
     }
 }
@@ -110,7 +111,7 @@ fun AuraCanvas(
         targetValue = 10f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 20000, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse // Или Reverse, чтобы цвета "дышали" туда-сюда
+            repeatMode = RepeatMode.Reverse
         ),
         label = "time_animation"
     )
