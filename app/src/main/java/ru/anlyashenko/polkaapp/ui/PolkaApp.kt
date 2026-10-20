@@ -7,6 +7,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
@@ -25,7 +27,9 @@ fun PolkaApp(
     val navigator = remember { Navigator(appState.navigationState) }
 
     PolkaBackground(modifier = modifier) {
-        Scaffold { innerPadding ->
+        Scaffold(
+            modifier = Modifier.semantics { testTagsAsResourceId = true }
+        ) { innerPadding ->
             val entryProvider = entryProvider {
                 inventoryEntry(navigator)
                 auraEntry(navigator)

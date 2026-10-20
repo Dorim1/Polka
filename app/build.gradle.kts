@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.polka.android.application.compose)
     alias(libs.plugins.polka.hilt)
     alias(libs.plugins.roborazzi)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -20,6 +21,12 @@ android {
             optimization {
                 enable = false
             }
+        }
+        create("benchmark") {
+            initWith(buildTypes.getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+            isDebuggable = false
         }
     }
 
@@ -72,4 +79,7 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.kotlin.test)
+
+    baselineProfile(projects.benchmarks)
+
 }
